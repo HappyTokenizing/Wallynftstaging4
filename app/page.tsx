@@ -95,6 +95,7 @@ export default function Home() {
   const [visibleCount, setVisibleCount] = useState(8);
   const [signalOpen, setSignalOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('story');
+  const [replaySignal, setReplaySignal] = useState(0);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -174,7 +175,7 @@ export default function Home() {
       </header>
 
       <main className="edition-main">
-        <BroadcastIntro />
+        <BroadcastIntro key={replaySignal} />
 
         <section
           className="front-page"
@@ -304,6 +305,23 @@ export default function Home() {
                 <p>{story.copy}</p>
               </article>
             ))}
+            <article className="world-story broadcast-replay-story">
+              <p>BROADCAST ARCHIVE</p>
+              <div className="broadcast-replay-mark" aria-hidden="true">
+                ↻
+              </div>
+              <h2>Replay the opening bulletin.</h2>
+              <p>
+                Return to the television desk and watch today&apos;s special
+                report from the beginning.
+              </p>
+              <button
+                type="button"
+                onClick={() => setReplaySignal((signal) => signal + 1)}
+              >
+                Replay broadcast <span aria-hidden="true">↻</span>
+              </button>
+            </article>
           </div>
           <a className="page-turn" href="#herd">
             Continue to the Special Report <span aria-hidden="true">→</span>

@@ -87,6 +87,13 @@ export function BroadcastIntro() {
     if (video.paused) void video.play().then(() => setPlaying(true));
   };
 
+  const replayVideo = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = 0;
+    void video.play().then(() => setPlaying(true));
+  };
+
   return (
     <section
       className={`arrival-broadcast phase-${phase}${departed ? ' is-departed' : ''}`}
@@ -151,6 +158,17 @@ export function BroadcastIntro() {
               IS COMING ONCHAIN
             </strong>
           </div>
+          {phase === 'broadcast' && playing && (
+            <button
+              type="button"
+              className="arrival-screen-replay"
+              onClick={replayVideo}
+              aria-label="Replay the opening broadcast"
+              title="Replay broadcast"
+            >
+              <span aria-hidden="true">↻</span>
+            </button>
+          )}
         </div>
       </div>
 
