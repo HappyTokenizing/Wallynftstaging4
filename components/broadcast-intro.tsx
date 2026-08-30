@@ -66,6 +66,35 @@ export function BroadcastIntro() {
     });
   }, [phase]);
 
+  useEffect(() => {
+    if (phase !== 'broadcast') return;
+
+    const handlePlaybackShortcut = (event: KeyboardEvent) => {
+      if (event.code !== 'Space') return;
+      const target = event.target as HTMLElement | null;
+      if (
+        target?.closest(
+          'button, a, input, textarea, select, [contenteditable="true"]',
+        )
+      ) {
+        return;
+      }
+
+      const video = videoRef.current;
+      if (!video) return;
+      event.preventDefault();
+      if (video.paused) {
+        void video.play().then(() => setPlaying(true));
+      } else {
+        video.pause();
+        setPlaying(false);
+      }
+    };
+
+    window.addEventListener('keydown', handlePlaybackShortcut);
+    return () => window.removeEventListener('keydown', handlePlaybackShortcut);
+  }, [phase]);
+
   const togglePlayback = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -158,17 +187,6 @@ export function BroadcastIntro() {
               IS COMING ONCHAIN
             </strong>
           </div>
-          {phase === 'broadcast' && playing && (
-            <button
-              type="button"
-              className="arrival-screen-replay"
-              onClick={replayVideo}
-              aria-label="Replay the opening broadcast"
-              title="Replay broadcast"
-            >
-              <span aria-hidden="true">↻</span>
-            </button>
-          )}
         </div>
       </div>
 
@@ -181,13 +199,25 @@ export function BroadcastIntro() {
           </button>
         )}
         {phase === 'broadcast' && (
-          <button type="button" onClick={toggleSound}>
-            {soundBlocked
-              ? 'START BROADCAST WITH SOUND'
-              : muted
-                ? 'TURN SOUND ON'
-                : 'SOUND ON'}
-          </button>
+          <>
+            <button type="button" onClick={toggleSound}>
+              {soundBlocked
+                ? 'START BROADCAST WITH SOUND'
+                : muted
+                  ? 'TURN SOUND ON'
+                  : 'SOUND ON'}
+            </button>
+            <button
+              type="button"
+              className="arrival-replay"
+              onClick={replayVideo}
+              aria-label="Replay the opening broadcast"
+              title="Replay broadcast"
+            >
+              <span aria-hidden="true">↻</span>
+              <span className="sr-only">Replay broadcast</span>
+            </button>
+          </>
         )}
         <button
           type="button"

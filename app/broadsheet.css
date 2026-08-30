@@ -412,8 +412,8 @@ html {
   width: 100%;
   aspect-ratio: 1.45 / 0.88;
   object-fit: cover;
-  filter: grayscale(1) contrast(1.28);
-  mix-blend-mode: multiply;
+  filter: contrast(1.08);
+  mix-blend-mode: normal;
   transition: transform 0.28s ease;
 }
 

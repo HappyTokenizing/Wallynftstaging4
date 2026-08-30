@@ -187,37 +187,6 @@ body.broadcast-locked .edition-footer {
   line-height: 0.92;
   letter-spacing: -0.055em;
 }
-.arrival-screen-replay {
-  position: absolute;
-  z-index: 8;
-  top: 18px;
-  right: 20px;
-  width: 46px;
-  height: 46px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(242, 234, 214, 0.7);
-  border-radius: 50%;
-  background: rgba(9, 9, 7, 0.64);
-  color: #f2ead6;
-  cursor: pointer;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 28px;
-  line-height: 1;
-  opacity: 0.76;
-  transition:
-    opacity 0.18s ease,
-    background 0.18s ease,
-    color 0.18s ease;
-}
-.arrival-screen-replay:hover,
-.arrival-screen-replay:focus-visible {
-  border-color: #f2ead6;
-  background: #f2ead6;
-  color: #17150f;
-  opacity: 1;
-  outline: none;
-}
 .phase-leaving .arrival-title-card {
   opacity: 1;
   transform: scaleY(1);
@@ -264,6 +233,16 @@ body.broadcast-locked .edition-footer {
 }
 .arrival-controls .arrival-skip {
   border-color: rgba(178, 80, 62, 0.75);
+}
+
+.arrival-controls .arrival-replay {
+  width: 44px;
+  min-width: 44px;
+  padding: 0;
+  border-radius: 50%;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 25px;
+  line-height: 1;
 }
 
 @keyframes arrivalStatic {
@@ -323,12 +302,11 @@ body.broadcast-locked .edition-footer {
   .arrival-title-card strong {
     font-size: clamp(24px, 8.5vw, 42px);
   }
-  .arrival-screen-replay {
-    top: 12px;
-    right: 13px;
-    width: 42px;
-    height: 42px;
-    font-size: 25px;
+  .arrival-controls .arrival-replay {
+    width: 40px;
+    min-width: 40px;
+    padding: 0;
+    font-size: 23px;
   }
 }
 
