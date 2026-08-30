@@ -446,7 +446,7 @@ body::before {
 .collection-tools {
   min-height: 65px;
   display: grid;
-  grid-template-columns: minmax(220px, 0.78fr) 1.4fr auto;
+  grid-template-columns: minmax(220px, 0.78fr) 1.4fr auto auto;
   align-items: center;
   gap: 18px;
   padding: 9px;
@@ -499,7 +499,37 @@ body::before {
   color: var(--paper-light);
   outline: none;
 }
-.collection-tools > span {
+.collection-order {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(242, 234, 214, 0.42);
+}
+.collection-order button {
+  min-height: 39px;
+  padding: 8px 11px;
+  border: 0;
+  border-left: 1px solid rgba(242, 234, 214, 0.32);
+  border-radius: 0;
+  background: transparent;
+  color: #aaa392;
+  cursor: pointer;
+  font-family: var(--label);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.collection-order button:first-child {
+  border-left: 0;
+}
+.collection-order button:hover,
+.collection-order button:focus-visible,
+.collection-order button.active {
+  background: var(--paper);
+  color: var(--news-ink);
+  outline: none;
+}
+.collection-count {
   color: #a7a08f;
   font-family: var(--label);
   font-size: 8px;
@@ -868,7 +898,10 @@ body::before {
   .collection-tools {
     grid-template-columns: 1fr;
   }
-  .collection-tools > span {
+  .collection-order {
+    justify-self: center;
+  }
+  .collection-count {
     text-align: center;
   }
   .edition-grid {

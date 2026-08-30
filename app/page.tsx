@@ -45,12 +45,12 @@ const collection = collectionPayload as CollectionData;
 const featuredNumbers = [
   '0001',
   '0003',
+  '0014',
+  '0027',
+  '0140',
   '0280',
   '0296',
   '0347',
-  '0014',
-  '0027',
-  '0635',
 ] as const;
 const featuredOrder = new Map<string, number>(
   featuredNumbers.map((number, index) => [number, index]),
@@ -110,6 +110,9 @@ function tierSlug(tier: string) {
 export default function Home() {
   const [query, setQuery] = useState('');
   const [activeTier, setActiveTier] = useState('All');
+  const [collectionOrder, setCollectionOrder] = useState<'featured' | 'number'>(
+    'featured',
+  );
   const [visibleCount, setVisibleCount] = useState(8);
   const [signalOpen, setSignalOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('story');
@@ -134,7 +137,9 @@ export default function Home() {
 
   const filteredItems = useMemo(() => {
     const needle = query.trim().toLowerCase().replace(/^#/, '');
-    return orderedCollectionItems.filter((item) => {
+    const items =
+      collectionOrder === 'number' ? collection.items : orderedCollectionItems;
+    return items.filter((item) => {
       const tierMatch = activeTier === 'All' || item.tier === activeTier;
       const searchText = [
         item.number,
@@ -149,7 +154,7 @@ export default function Home() {
         .toLowerCase();
       return tierMatch && (!needle || searchText.includes(needle));
     });
-  }, [activeTier, query]);
+  }, [activeTier, collectionOrder, query]);
 
   const chooseTier = (tier: string) => {
     setActiveTier(tier);
@@ -428,6 +433,30 @@ export default function Home() {
                   {tier}
                 </button>
               ))}
+            </div>
+            <div className="collection-order" aria-label="Collection order">
+              <button
+                type="button"
+                className={collectionOrder === 'featured' ? 'active' : ''}
+                onClick={() => {
+                  setCollectionOrder('featured');
+                  setVisibleCount(8);
+                }}
+                aria-pressed={collectionOrder === 'featured'}
+              >
+                Featured
+              </button>
+              <button
+                type="button"
+                className={collectionOrder === 'number' ? 'active' : ''}
+                onClick={() => {
+                  setCollectionOrder('number');
+                  setVisibleCount(8);
+                }}
+                aria-pressed={collectionOrder === 'number'}
+              >
+                # Order
+              </button>
             </div>
             <output className="collection-count" aria-live="polite">
               {filteredItems.length} records

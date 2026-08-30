@@ -41,12 +41,7 @@ def choose_diverse(rows: list[dict], tier: str, count: int, chosen: list[dict]) 
 
 def main() -> None:
     rows = json.loads(PLAN.read_text(encoding="utf-8"))["rows"]
-    special = [row for row in rows if row["Type"] == "1 of 1"]
-    regular = [row for row in rows if row["Type"] == "Regular"]
-    chosen = special.copy()
-    for tier, count in (("Epic", 6), ("Rare", 14), ("Uncommon", 10), ("Common", 6)):
-        picked = choose_diverse(regular, tier, count, chosen)
-        chosen.extend(picked)
+    chosen = rows
 
     ranking = sorted(
         rows,
@@ -103,7 +98,7 @@ def main() -> None:
     (PROJECT / "public" / "collection.json").write_text(
         json.dumps(payload, indent=2) + "\n", encoding="utf-8"
     )
-    print(f"Prepared {len(records)} collection previews in {OUTPUT}")
+    print(f"Prepared all {len(records)} collection records in {OUTPUT}")
 
 
 if __name__ == "__main__":
