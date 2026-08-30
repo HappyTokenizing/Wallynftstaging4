@@ -1,38 +1,62 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
-import { Pause, Play, Radio, RotateCcw, Volume2, VolumeX } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-type Phase = 'static' | 'broadcast' | 'reveal';
-
-const revealWallys = ['0271', '0964', '0014', '0233', '0590'];
+type Phase = 'static' | 'broadcast' | 'leaving';
 
 export function BroadcastIntro() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const exitTimerRef = useRef<number | null>(null);
   const [phase, setPhase] = useState<Phase>('static');
+  const [departed, setDeparted] = useState(false);
   const [muted, setMuted] = useState(true);
-  const [playing, setPlaying] = useState(true);
-  const [mediaFailed, setMediaFailed] = useState(false);
+  const [playing, setPlaying] = useState(false);
+
+  const completeExit = useCallback(() => {
+    document.body.classList.remove('broadcast-locked');
+    setDeparted(true);
+    exitTimerRef.current = null;
+  }, []);
+
+  const finishBroadcast = useCallback(() => {
+    if (exitTimerRef.current) return;
+    videoRef.current?.pause();
+    setPlaying(false);
+    setPhase('leaving');
+    exitTimerRef.current = window.setTimeout(completeExit, 720);
+  }, [completeExit]);
 
   useEffect(() => {
+    document.body.classList.add('broadcast-locked');
     const reducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)',
     ).matches;
-    const timer = window.setTimeout(
-      () => setPhase(reducedMotion ? 'reveal' : 'broadcast'),
-      reducedMotion ? 100 : 1150,
+    const tuneTimer = window.setTimeout(
+      () => {
+        if (reducedMotion) completeExit();
+        else setPhase('broadcast');
+      },
+      reducedMotion ? 100 : 950,
     );
-    return () => window.clearTimeout(timer);
-  }, []);
+    const keyHandler = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') finishBroadcast();
+    };
+    window.addEventListener('keydown', keyHandler);
+
+    return () => {
+      window.clearTimeout(tuneTimer);
+      if (exitTimerRef.current) window.clearTimeout(exitTimerRef.current);
+      window.removeEventListener('keydown', keyHandler);
+      document.body.classList.remove('broadcast-locked');
+    };
+  }, [completeExit, finishBroadcast]);
 
   useEffect(() => {
     if (phase !== 'broadcast' || !videoRef.current) return;
     const video = videoRef.current;
     video.muted = muted;
-    void video.play().catch(() => {
-      setPlaying(false);
-    });
+    void video.play().catch(() => setPlaying(false));
   }, [muted, phase]);
 
   const togglePlayback = () => {
@@ -46,7 +70,7 @@ export function BroadcastIntro() {
     }
   };
 
-  const enableSound = () => {
+  const toggleSound = () => {
     const video = videoRef.current;
     if (!video) return;
     const nextMuted = !muted;
@@ -55,204 +79,93 @@ export function BroadcastIntro() {
     if (video.paused) void video.play().then(() => setPlaying(true));
   };
 
-  const replay = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.currentTime = 0;
-    setPhase('broadcast');
-    setPlaying(true);
-    void video.play();
-  };
-
-  const reveal = () => {
-    videoRef.current?.pause();
-    setPlaying(false);
-    setPhase('reveal');
-  };
-
   return (
     <section
-      className={`broadcast-hero phase-${phase}`}
-      aria-labelledby="hero-title"
+      className={`arrival-broadcast phase-${phase}${departed ? ' is-departed' : ''}`}
+      aria-label="Wally World Service opening broadcast"
+      aria-hidden={departed}
     >
-      <div className="broadcast-masthead">
+      <div className="arrival-ident" aria-hidden="true">
         <span>WALLY WORLD SERVICE</span>
-        <i aria-hidden="true" />
-        <span>THE RWA REPORT</span>
-        <i aria-hidden="true" />
-        <span>TRANSMISSION № 001</span>
+        <span>TRANSMISSION 001</span>
       </div>
 
-      <div className="broadcast-layout">
-        <div className="broadcast-copy">
-          <p className="broadcast-eyebrow">
-            <Radio aria-hidden="true" /> A SPECIAL TELEVISION BULLETIN
-          </p>
-          <h1 id="hero-title">
-            The real world is <em>coming onchain.</em>
-          </h1>
-          <p className="broadcast-deck">
-            Tonight: one elephant, one thousand leaders, and a mission to make
-            real-world markets fair, open, and useful for everyone.
-          </p>
-          <a className="broadcast-story-link" href="#story">
-            Read the full report <span aria-hidden="true">↓</span>
-          </a>
-        </div>
+      <div className="tv-photo-stage">
+        <Image
+          className="tv-photo-frame tv-photo-frame-desktop"
+          src="/media/vintage-tv-frame.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+        />
+        <Image
+          className="tv-photo-frame tv-photo-frame-mobile"
+          src="/media/vintage-tv-frame-mobile.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+        />
 
-        <div className="television-wrap">
-          <div
-            className="television"
-            aria-label="Wally World Service television"
+        <div className="photo-tv-screen">
+          <video
+            ref={videoRef}
+            className="arrival-video"
+            muted={muted}
+            playsInline
+            preload="auto"
+            aria-label="Wally World Service opening film"
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+            onEnded={finishBroadcast}
+            onError={finishBroadcast}
           >
-            <div className="tv-case">
-              <div className="tv-screen-bezel">
-                <div className="tv-screen">
-                  <video
-                    ref={videoRef}
-                    className="broadcast-video"
-                    muted={muted}
-                    playsInline
-                    preload="auto"
-                    aria-label="Wally World Service opening broadcast"
-                    onPlay={() => setPlaying(true)}
-                    onPause={() => setPlaying(false)}
-                    onEnded={reveal}
-                    onError={() => {
-                      setMediaFailed(true);
-                      setPhase('reveal');
-                    }}
-                  >
-                    <source
-                      src="/media/wally-world-service-broadcast.mp4"
-                      type="video/mp4"
-                    />
-                    Your browser does not support the video broadcast.
-                  </video>
-
-                  <div className="tv-static" aria-hidden="true" />
-                  <div className="tv-scanlines" aria-hidden="true" />
-
-                  <div className="collection-reveal" aria-live="polite">
-                    <div className="reveal-grid" aria-hidden="true">
-                      {revealWallys.map((number, index) => (
-                        <div
-                          className={`reveal-wally reveal-wally-${index + 1}`}
-                          key={number}
-                        >
-                          <Image
-                            src={`/collection/${number}.webp`}
-                            alt=""
-                            width={600}
-                            height={600}
-                            priority={index < 3}
-                            sizes="(max-width: 720px) 38vw, 210px"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                    <div className="reveal-caption">
-                      <span>
-                        {mediaFailed
-                          ? 'ARCHIVE SIGNAL RESTORED'
-                          : 'THE HERD IS ASSEMBLING'}
-                      </span>
-                      <strong>1,000 leaders for the real world.</strong>
-                    </div>
-                  </div>
-
-                  <div className="screen-ident" aria-hidden="true">
-                    <span>WWS</span>
-                    <span>
-                      {phase === 'static'
-                        ? 'TUNING'
-                        : phase === 'broadcast'
-                          ? 'ON AIR'
-                          : 'THE HERD'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="tv-controls" aria-hidden="true">
-                <div className="tv-brand">WALLYVISION</div>
-                <div className="tv-dial">
-                  <span />
-                </div>
-                <div className="tv-dial small">
-                  <span />
-                </div>
-                <div className="tv-speaker" />
-              </div>
-            </div>
-            <div className="tv-legs" aria-hidden="true">
-              <span />
-              <span />
-            </div>
-          </div>
-
-          <div className="broadcast-controls" aria-label="Broadcast controls">
-            {phase === 'broadcast' && (
-              <>
-                <button
-                  type="button"
-                  onClick={togglePlayback}
-                  aria-label={playing ? 'Pause broadcast' : 'Play broadcast'}
-                >
-                  {playing ? (
-                    <Pause aria-hidden="true" />
-                  ) : (
-                    <Play aria-hidden="true" />
-                  )}
-                  {playing ? 'Pause' : 'Play'}
-                </button>
-                <button
-                  type="button"
-                  className={!muted ? 'is-live' : ''}
-                  onClick={enableSound}
-                >
-                  {muted ? (
-                    <VolumeX aria-hidden="true" />
-                  ) : (
-                    <Volume2 aria-hidden="true" />
-                  )}
-                  {muted ? 'Turn on the broadcast' : 'Sound on'}
-                </button>
-                <button type="button" onClick={reveal}>
-                  Skip to the collection
-                </button>
-              </>
-            )}
-            {phase === 'static' && (
-              <>
-                <span className="tuning-label">Acquiring signal…</span>
-                <button type="button" onClick={reveal}>
-                  Skip to the collection
-                </button>
-              </>
-            )}
-            {phase === 'reveal' && (
-              <>
-                <button type="button" onClick={replay}>
-                  <RotateCcw aria-hidden="true" /> Replay bulletin
-                </button>
-                <a href="#registry">Enter the herd registry</a>
-              </>
-            )}
+            <source
+              src="/media/wally-world-service-broadcast.mp4"
+              type="video/mp4"
+            />
+            <track
+              kind="captions"
+              src="/media/wally-world-service-captions.vtt"
+              srcLang="en"
+              label="English"
+            />
+            Your browser does not support this video.
+          </video>
+          <div className="arrival-static" aria-hidden="true" />
+          <div className="arrival-scanlines" aria-hidden="true" />
+          <div className="arrival-title-card" aria-hidden="true">
+            <span>A WALLY WORLD SERVICE BULLETIN</span>
+            <strong>
+              THE REAL WORLD
+              <br />
+              IS COMING ONCHAIN
+            </strong>
           </div>
         </div>
       </div>
 
-      <div className="broadcast-ticker" aria-label="Breaking news">
-        <strong>BREAKING NEWS</strong>
-        <div>
-          <span>
-            1,000 LEADERS ASSEMBLE FOR FAIR &amp; OPEN RWA
-            MARKETS&nbsp;&nbsp;◆&nbsp;&nbsp; THE REAL WORLD IS COMING
-            ONCHAIN&nbsp;&nbsp;◆&nbsp;&nbsp; WALLY FOUNDATION CLUB TRANSMISSION
-            BEGINS&nbsp;&nbsp;◆&nbsp;&nbsp;
-          </span>
-        </div>
+      <div className="arrival-controls" aria-label="Broadcast controls">
+        {phase === 'static' ? (
+          <span>ACQUIRING SIGNAL</span>
+        ) : (
+          <button type="button" onClick={togglePlayback}>
+            {playing ? 'PAUSE' : 'PLAY'}
+          </button>
+        )}
+        {phase === 'broadcast' && (
+          <button type="button" onClick={toggleSound}>
+            {muted ? 'TURN SOUND ON' : 'SOUND ON'}
+          </button>
+        )}
+        <button
+          type="button"
+          className="arrival-skip"
+          onClick={finishBroadcast}
+        >
+          SKIP TO TODAY&apos;S EDITION
+        </button>
       </div>
     </section>
   );

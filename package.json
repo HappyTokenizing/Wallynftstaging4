@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "oxlint app/page.tsx app/layout.tsx components/ui/dialog.tsx components/ui/button.tsx lib/utils.ts",
+    "lint": "oxlint app/page.tsx app/layout.tsx components/broadcast-intro.tsx components/ui/dialog.tsx components/ui/button.tsx lib/utils.ts",
     "format": "oxfmt"
   },
   "dependencies": {

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './edition.css';
+import './arrival.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://wallynftstaging4.vercel.app'),
