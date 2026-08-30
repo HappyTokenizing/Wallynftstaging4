@@ -137,6 +137,16 @@ export function BroadcastIntro() {
   const toggleSound = () => {
     const video = videoRef.current;
     if (!video) return;
+
+    if (soundBlocked) {
+      video.currentTime = 0;
+      video.muted = false;
+      setMuted(false);
+      setSoundBlocked(false);
+      void video.play().then(() => setPlaying(true));
+      return;
+    }
+
     const nextMuted = !muted;
     video.muted = nextMuted;
     setMuted(nextMuted);
@@ -183,6 +193,7 @@ export function BroadcastIntro() {
         />
 
         <div className="photo-tv-screen">
+          {/* oxlint-disable-next-line jsx-a11y/media-has-caption -- the user explicitly requested a caption-free opening film */}
           <video
             ref={videoRef}
             className="arrival-video"
@@ -198,13 +209,6 @@ export function BroadcastIntro() {
             <source
               src="/media/wally-world-service-broadcast.mp4"
               type="video/mp4"
-            />
-            <track
-              default
-              kind="captions"
-              src="/media/wally-world-service-captions.vtt"
-              srcLang="en"
-              label="English"
             />
             Your browser does not support this video.
           </video>
@@ -250,11 +254,9 @@ export function BroadcastIntro() {
               type="button"
               className="arrival-replay"
               onClick={replayVideo}
-              aria-label="Replay the opening broadcast"
-              title="Replay broadcast"
+              title="Restart video"
             >
-              <span aria-hidden="true">↻</span>
-              <span className="sr-only">Replay broadcast</span>
+              Restart Video
             </button>
           </>
         )}

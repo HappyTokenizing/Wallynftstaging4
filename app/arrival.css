@@ -243,13 +243,7 @@ body.broadcast-locked .edition-footer {
 }
 
 .arrival-controls .arrival-replay {
-  width: 44px;
-  min-width: 44px;
-  padding: 0;
-  border-radius: 50%;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 25px;
-  line-height: 1;
+  min-width: 116px;
 }
 
 @keyframes arrivalStatic {
@@ -301,7 +295,7 @@ body.broadcast-locked .edition-footer {
   .arrival-controls {
     inset: auto 10px calc(10px + env(safe-area-inset-bottom));
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 44px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 5px;
     margin-inline: auto;
   }
@@ -339,10 +333,10 @@ body.broadcast-locked .edition-footer {
     font-size: clamp(24px, 8.5vw, 42px);
   }
   .arrival-controls .arrival-replay {
-    width: 44px;
-    min-width: 44px;
-    padding: 0;
-    font-size: 23px;
+    width: 100%;
+    min-width: 0;
+    padding: 9px 10px;
+    font-size: 9px;
   }
 }
 
