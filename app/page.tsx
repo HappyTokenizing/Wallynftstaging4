@@ -52,16 +52,16 @@ const editionSections = [
 ] as const;
 const worldDeskStories = [
   {
-    src: '/editorial/bridge-elephant-wally.png',
-    alt: 'A real elephant with a full-color rainbow Wally NFT head at a 1943 bridge construction site',
+    src: '/editorial/bridge-elephant-laurel-wally.png',
+    alt: 'A real elephant with a full-color laurel-wreath Wally NFT head at a 1943 bridge construction site',
     desk: 'INFRASTRUCTURE',
     title: 'The rails, bridges, and public works that hold value together.',
     copy: 'Real-world assets begin with the systems people rely on every day. Onchain markets can widen how that value is understood and accessed.',
     credit: 'Library of Congress · FSA/OWI · 1943',
   },
   {
-    src: '/editorial/wall-street-elephant-wally.png',
-    alt: 'A real elephant with a full-color golden-haired Wally NFT head on Wall Street in 1917',
+    src: '/editorial/wall-street-elephant-top-hat-wally.png',
+    alt: 'A real elephant with a full-color top-hat Wally NFT head on Wall Street in 1917',
     desk: 'MARKETS',
     title: 'Old markets meet open rails.',
     copy: 'Transparency should travel farther than privilege.',
@@ -221,21 +221,21 @@ export default function Home() {
           <div className="front-grid">
             <figure className="front-portrait">
               <Image
-                src="/collection/0271.webp"
-                alt="Rainbow Wally, one of the one-of-one leaders"
-                width={600}
-                height={600}
+                src="/editorial/breaking-news-wally-herd.png"
+                alt="Five real black-and-white elephants with distinct full-color Wally NFT heads, led by Rainbow Wally"
+                width={1536}
+                height={1024}
                 sizes="(max-width: 760px) 92vw, 40vw"
                 priority
               />
               <figcaption>
-                Wally No. 0271 · One leader in a herd of 1,000
+                Five leaders answer the call · The RWA Herd is 1,000 strong
               </figcaption>
             </figure>
 
             <article className="lead-copy">
               <p className="front-byline">By The Wally Editorial Desk</p>
-              <p>
+              <p className="lead-dropcap">
                 The world holds enormous value. Access to it is still too
                 narrow. Wally exists to make the shift to real-world assets
                 understandable, memorable, and human.
@@ -411,7 +411,9 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            <span>{filteredItems.length} records</span>
+            <output className="collection-count" aria-live="polite">
+              {filteredItems.length} records
+            </output>
           </div>
 
           <div className="edition-grid">

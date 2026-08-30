@@ -6,7 +6,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 type Phase = 'static' | 'broadcast' | 'leaving';
 
 export function BroadcastIntro() {
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const skipButtonRef = useRef<HTMLButtonElement>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
   const exitTimerRef = useRef<number | null>(null);
   const [phase, setPhase] = useState<Phase>('static');
   const [departed, setDeparted] = useState(false);
@@ -18,6 +21,7 @@ export function BroadcastIntro() {
     document.body.classList.remove('broadcast-locked');
     setDeparted(true);
     exitTimerRef.current = null;
+    previouslyFocusedRef.current?.focus();
   }, []);
 
   const finishBroadcast = useCallback(() => {
@@ -29,7 +33,12 @@ export function BroadcastIntro() {
   }, [completeExit]);
 
   useEffect(() => {
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
     document.body.classList.add('broadcast-locked');
+    const focusTimer = window.setTimeout(
+      () => skipButtonRef.current?.focus(),
+      0,
+    );
     const reducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)',
     ).matches;
@@ -42,11 +51,30 @@ export function BroadcastIntro() {
     );
     const keyHandler = (event: KeyboardEvent) => {
       if (event.key === 'Escape') finishBroadcast();
+      if (event.key !== 'Tab') return;
+
+      const focusable = Array.from(
+        dialogRef.current?.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      ).filter((element) => !element.hasAttribute('hidden'));
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     window.addEventListener('keydown', keyHandler);
 
     return () => {
       window.clearTimeout(tuneTimer);
+      window.clearTimeout(focusTimer);
       if (exitTimerRef.current) window.clearTimeout(exitTimerRef.current);
       window.removeEventListener('keydown', keyHandler);
       document.body.classList.remove('broadcast-locked');
@@ -124,10 +152,12 @@ export function BroadcastIntro() {
   };
 
   return (
-    <section
+    <dialog
+      ref={dialogRef}
+      open={!departed}
       className={`arrival-broadcast phase-${phase}${departed ? ' is-departed' : ''}`}
       aria-label="The Daily Times Journal Bulletin opening broadcast"
-      aria-hidden={departed}
+      aria-modal={departed ? undefined : true}
     >
       <div className="arrival-ident" aria-hidden="true">
         <span>THE DAILY TIMES JOURNAL BULLETIN</span>
@@ -170,6 +200,7 @@ export function BroadcastIntro() {
               type="video/mp4"
             />
             <track
+              default
               kind="captions"
               src="/media/wally-world-service-captions.vtt"
               srcLang="en"
@@ -194,18 +225,26 @@ export function BroadcastIntro() {
         {phase === 'static' ? (
           <span>ACQUIRING SIGNAL</span>
         ) : (
-          <button type="button" onClick={togglePlayback}>
+          <button
+            type="button"
+            className="arrival-playback"
+            onClick={togglePlayback}
+          >
             {playing ? 'PAUSE' : 'PLAY'}
           </button>
         )}
         {phase === 'broadcast' && (
           <>
-            <button type="button" onClick={toggleSound}>
+            <button
+              type="button"
+              className="arrival-sound"
+              onClick={toggleSound}
+            >
               {soundBlocked
                 ? 'START BROADCAST WITH SOUND'
                 : muted
                   ? 'TURN SOUND ON'
-                  : 'SOUND ON'}
+                  : 'TURN SOUND OFF'}
             </button>
             <button
               type="button"
@@ -220,6 +259,7 @@ export function BroadcastIntro() {
           </>
         )}
         <button
+          ref={skipButtonRef}
           type="button"
           className="arrival-skip"
           onClick={finishBroadcast}
@@ -227,6 +267,6 @@ export function BroadcastIntro() {
           SKIP TO TODAY&apos;S EDITION
         </button>
       </div>
-    </section>
+    </dialog>
   );
 }
