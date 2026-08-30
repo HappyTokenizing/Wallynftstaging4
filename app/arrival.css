@@ -77,12 +77,14 @@ body.broadcast-locked .edition-footer {
 .photo-tv-screen {
   position: absolute;
   z-index: 2;
-  top: 9.8%;
-  left: 7.8%;
-  width: 69.3%;
-  height: 76.2%;
+  top: 11.4%;
+  left: 9.15%;
+  width: 66.25%;
+  height: 72.2%;
   overflow: hidden;
-  border-radius: 17% / 12.5%;
+  border-radius: 18% 18% 16% 16% / 14% 14% 17% 17%;
+  clip-path: inset(0 round 18% 18% 16% 16% / 14% 14% 17% 17%);
+  contain: paint;
   background: #090a08;
   box-shadow:
     inset 0 0 34px 14px #000,
@@ -95,7 +97,7 @@ body.broadcast-locked .edition-footer {
   object-fit: cover;
   opacity: 0;
   filter: grayscale(0.75) sepia(0.48) contrast(1.25) brightness(0.76);
-  transform: scale(1.035);
+  transform: scale(1.012);
   transition: opacity 0.25s ease;
 }
 .phase-broadcast .arrival-video {
@@ -271,11 +273,12 @@ body.broadcast-locked .edition-footer {
     display: block;
   }
   .photo-tv-screen {
-    top: 10.8%;
-    left: 11.3%;
-    width: 77.1%;
-    height: 52.4%;
-    border-radius: 15% / 12%;
+    top: 12.35%;
+    left: 13.45%;
+    width: 73.1%;
+    height: 49.35%;
+    border-radius: 15% 15% 14% 14% / 12% 12% 15% 15%;
+    clip-path: inset(0 round 15% 15% 14% 14% / 12% 12% 15% 15%);
   }
   .arrival-controls {
     inset: auto 10px 10px;

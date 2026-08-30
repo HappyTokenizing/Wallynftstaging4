@@ -10,7 +10,8 @@ export function BroadcastIntro() {
   const exitTimerRef = useRef<number | null>(null);
   const [phase, setPhase] = useState<Phase>('static');
   const [departed, setDeparted] = useState(false);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false);
+  const [soundBlocked, setSoundBlocked] = useState(false);
   const [playing, setPlaying] = useState(false);
 
   const completeExit = useCallback(() => {
@@ -55,9 +56,15 @@ export function BroadcastIntro() {
   useEffect(() => {
     if (phase !== 'broadcast' || !videoRef.current) return;
     const video = videoRef.current;
-    video.muted = muted;
-    void video.play().catch(() => setPlaying(false));
-  }, [muted, phase]);
+    video.muted = false;
+    setMuted(false);
+    void video.play().catch(() => {
+      video.muted = true;
+      setMuted(true);
+      setSoundBlocked(true);
+      void video.play().catch(() => setPlaying(false));
+    });
+  }, [phase]);
 
   const togglePlayback = () => {
     const video = videoRef.current;
@@ -76,6 +83,7 @@ export function BroadcastIntro() {
     const nextMuted = !muted;
     video.muted = nextMuted;
     setMuted(nextMuted);
+    setSoundBlocked(false);
     if (video.paused) void video.play().then(() => setPlaying(true));
   };
 
@@ -156,7 +164,11 @@ export function BroadcastIntro() {
         )}
         {phase === 'broadcast' && (
           <button type="button" onClick={toggleSound}>
-            {muted ? 'TURN SOUND ON' : 'SOUND ON'}
+            {soundBlocked
+              ? 'START BROADCAST WITH SOUND'
+              : muted
+                ? 'TURN SOUND ON'
+                : 'SOUND ON'}
           </button>
         )}
         <button

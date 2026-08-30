@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { BroadcastIntro } from '@/components/broadcast-intro';
 import {
@@ -43,6 +43,47 @@ type CollectionData = {
 
 const collection = collectionPayload as CollectionData;
 const tierOrder = ['All', 'Common', 'Uncommon', 'Rare', 'Epic', '1 of 1'];
+const editionSections = [
+  ['story', 'Front Page', 'Lead Story'],
+  ['world', 'World Desk', 'Real Assets'],
+  ['herd', 'Special Report', 'The 1,000'],
+  ['registry', 'Classifieds', 'Collection Index'],
+  ['activations', 'Public Square', 'Dispatches'],
+] as const;
+const worldDeskStories = [
+  {
+    src: '/editorial/bridge-construction-1943.jpg',
+    alt: 'Workers constructing a bridge across the Tidal Basin in Washington, D.C.',
+    desk: 'INFRASTRUCTURE',
+    title: 'The rails, bridges, and public works that hold value together.',
+    copy: 'Real-world assets begin with the systems people rely on every day. Onchain markets can widen how that value is understood and accessed.',
+    credit: 'Library of Congress · FSA/OWI · 1943',
+  },
+  {
+    src: '/editorial/wall-street-1917.jpg',
+    alt: 'Wall Street in New York City in 1917',
+    desk: 'MARKETS',
+    title: 'Old markets meet open rails.',
+    copy: 'Transparency should travel farther than privilege.',
+    credit: 'Library of Congress · 1917',
+  },
+  {
+    src: '/editorial/grain-boats-1943.jpg',
+    alt: 'Grain boats and elevators on the Erie Canal in Buffalo in 1943',
+    desk: 'COMMERCE',
+    title: 'Goods move. Ownership can move better.',
+    copy: 'Trade, inventory, and productive assets belong in a more connected system.',
+    credit: 'Library of Congress · FSA/OWI · 1943',
+  },
+  {
+    src: '/editorial/housing-1941.jpg',
+    alt: 'Prefabricated housing construction in Hartford, Connecticut in 1941',
+    desk: 'HOUSING',
+    title: 'The onchain world must still serve the real one.',
+    copy: 'Technology matters when it improves access to the assets that shape daily life.',
+    credit: 'Library of Congress · FSA/OWI · 1941',
+  },
+] as const;
 
 function tierSlug(tier: string) {
   return tier.toLowerCase().replaceAll(' ', '-');
@@ -53,6 +94,24 @@ export default function Home() {
   const [activeTier, setActiveTier] = useState('All');
   const [visibleCount, setVisibleCount] = useState(8);
   const [signalOpen, setSignalOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('story');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible?.target.id) setActiveSection(visible.target.id);
+      },
+      { rootMargin: '-18% 0px -64% 0px', threshold: [0.04, 0.2, 0.5] },
+    );
+    editionSections.forEach(([id]) => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+    return () => observer.disconnect();
+  }, []);
 
   const filteredItems = useMemo(() => {
     const needle = query.trim().toLowerCase().replace(/^#/, '');
@@ -97,11 +156,17 @@ export default function Home() {
             WALLY NFT<small>DAILY EDITION</small>
           </span>
         </a>
-        <nav aria-label="Main navigation">
-          <a href="#story">Front Page</a>
-          <a href="#herd">The 1,000</a>
-          <a href="#registry">Registry</a>
-          <a href="#activations">Dispatches</a>
+        <nav aria-label="Edition sections">
+          {editionSections.map(([id, label]) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              className={activeSection === id ? 'active' : ''}
+              aria-current={activeSection === id ? 'location' : undefined}
+            >
+              {label}
+            </a>
+          ))}
         </nav>
         <button type="button" onClick={() => setSignalOpen(true)}>
           Coming soon
@@ -130,6 +195,16 @@ export default function Home() {
             <span>SUNDAY, AUGUST 30, 2026</span>
             <span>PRICE: CONVICTION</span>
           </div>
+
+          <nav className="edition-index" aria-label="In this edition">
+            {editionSections.map(([id, label, description], index) => (
+              <a href={`#${id}`} key={id}>
+                <span>PAGE {index + 1}</span>
+                <strong>{label}</strong>
+                <small>{description}</small>
+              </a>
+            ))}
+          </nav>
 
           <div className="front-headline">
             <p>BREAKING NEWS!</p>
@@ -190,6 +265,49 @@ export default function Home() {
               </dl>
             </aside>
           </div>
+          <a className="page-turn" href="#world">
+            Turn to the World Desk <span aria-hidden="true">→</span>
+          </a>
+        </section>
+
+        <section
+          className="world-desk"
+          id="world"
+          aria-labelledby="world-desk-title"
+        >
+          <div className="section-rule">
+            <span>REAL-WORLD REPORT</span>
+            <span id="world-desk-title">What Comes Onchain</span>
+          </div>
+          <div className="world-grid">
+            {worldDeskStories.map((story, index) => (
+              <article
+                className={`world-story${index === 0 ? ' world-story-lead' : ''}`}
+                key={story.title}
+              >
+                <figure>
+                  <Image
+                    src={story.src}
+                    alt={story.alt}
+                    width={1024}
+                    height={790}
+                    sizes={
+                      index === 0
+                        ? '(max-width: 700px) 92vw, 48vw'
+                        : '(max-width: 700px) 92vw, 23vw'
+                    }
+                  />
+                  <figcaption>{story.credit}</figcaption>
+                </figure>
+                <p>{story.desk}</p>
+                <h2>{story.title}</h2>
+                <p>{story.copy}</p>
+              </article>
+            ))}
+          </div>
+          <a className="page-turn" href="#herd">
+            Continue to the Special Report <span aria-hidden="true">→</span>
+          </a>
         </section>
 
         <section
@@ -227,6 +345,9 @@ export default function Home() {
               </div>
             ))}
           </div>
+          <a className="page-turn" href="#registry">
+            Open the Collection Index <span aria-hidden="true">→</span>
+          </a>
         </section>
 
         <section
@@ -327,6 +448,9 @@ export default function Home() {
               Show more leaders
             </button>
           )}
+          <a className="page-turn" href="#activations">
+            Read Dispatches &amp; Activations <span aria-hidden="true">→</span>
+          </a>
         </section>
 
         <section
@@ -385,6 +509,7 @@ export default function Home() {
         <p>Mission-driven culture for fair and open RWA markets.</p>
         <nav aria-label="Footer navigation">
           <a href="#story">Front Page</a>
+          <a href="#world">World Desk</a>
           <a href="#registry">Registry</a>
           <a href="#activations">Dispatches</a>
         </nav>
