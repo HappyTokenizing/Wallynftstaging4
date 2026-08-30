@@ -60,7 +60,7 @@ const worldDeskStories = [
     credit: 'Library of Congress · FSA/OWI · 1943',
   },
   {
-    src: '/editorial/wall-street-elephant-top-hat-wally.png',
+    src: '/editorial/wall-street-elephant-top-hat-wally-v2.png',
     alt: 'A real elephant with a full-color top-hat Wally NFT head on Wall Street in 1917',
     desk: 'MARKETS',
     title: 'Old markets meet open rails.',
@@ -221,7 +221,7 @@ export default function Home() {
           <div className="front-grid">
             <figure className="front-portrait">
               <Image
-                src="/editorial/breaking-news-wally-herd.png"
+                src="/editorial/breaking-news-wally-herd-v2.png"
                 alt="Five real black-and-white elephants with distinct full-color Wally NFT heads, led by Rainbow Wally"
                 width={1536}
                 height={1024}
