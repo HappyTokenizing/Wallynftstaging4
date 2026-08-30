@@ -42,6 +42,24 @@ type CollectionData = {
 };
 
 const collection = collectionPayload as CollectionData;
+const featuredNumbers = [
+  '0001',
+  '0003',
+  '0280',
+  '0296',
+  '0347',
+  '0014',
+  '0027',
+  '0635',
+] as const;
+const featuredOrder = new Map<string, number>(
+  featuredNumbers.map((number, index) => [number, index]),
+);
+const orderedCollectionItems = [...collection.items].sort((a, b) => {
+  const aOrder = featuredOrder.get(a.number) ?? Number.MAX_SAFE_INTEGER;
+  const bOrder = featuredOrder.get(b.number) ?? Number.MAX_SAFE_INTEGER;
+  return aOrder - bOrder;
+});
 const tierOrder = ['All', 'Common', 'Uncommon', 'Rare', 'Epic', '1 of 1'];
 const editionSections = [
   ['story', 'Front Page', 'Lead Story'],
@@ -116,7 +134,7 @@ export default function Home() {
 
   const filteredItems = useMemo(() => {
     const needle = query.trim().toLowerCase().replace(/^#/, '');
-    return collection.items.filter((item) => {
+    return orderedCollectionItems.filter((item) => {
       const tierMatch = activeTier === 'All' || item.tier === activeTier;
       const searchText = [
         item.number,

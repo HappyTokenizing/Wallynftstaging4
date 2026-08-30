@@ -248,6 +248,7 @@ body::before {
   text-transform: uppercase;
 }
 .lead-copy {
+  min-width: 0;
   padding-bottom: 40px;
   font-size: clamp(18px, 1.45vw, 23px);
   line-height: 1.45;
@@ -255,7 +256,18 @@ body::before {
 .lead-copy p {
   margin: 0 0 22px;
 }
-.lead-copy p:first-child::first-letter {
+.front-byline {
+  padding: 8px 0 9px;
+  border-top: 1px solid var(--news-ink);
+  border-bottom: 1px solid var(--news-ink);
+  font-family: var(--label);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+.lead-copy .lead-dropcap::first-letter {
   float: left;
   margin: 3px 8px 0 0;
   color: var(--news-red);
@@ -263,6 +275,13 @@ body::before {
   font-size: 76px;
   font-weight: 700;
   line-height: 0.68;
+}
+.front-grid > * {
+  min-width: 0;
+}
+.lead-copy p,
+.lead-copy a {
+  overflow-wrap: anywhere;
 }
 .lead-copy a {
   min-height: 44px;
@@ -888,6 +907,16 @@ body::before {
   }
   .front-grid {
     grid-template-columns: 1fr;
+  }
+  .lead-copy {
+    width: 100%;
+    font-size: 19px;
+    line-height: 1.48;
+  }
+  .lead-copy .lead-dropcap::first-letter {
+    margin-top: 5px;
+    font-size: 62px;
+    line-height: 0.7;
   }
   .front-briefs {
     grid-column: auto;
