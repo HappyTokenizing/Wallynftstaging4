@@ -82,11 +82,11 @@ export function BroadcastIntro() {
   return (
     <section
       className={`arrival-broadcast phase-${phase}${departed ? ' is-departed' : ''}`}
-      aria-label="Wally World Service opening broadcast"
+      aria-label="The Daily Times Journal Bulletin opening broadcast"
       aria-hidden={departed}
     >
       <div className="arrival-ident" aria-hidden="true">
-        <span>WALLY WORLD SERVICE</span>
+        <span>THE DAILY TIMES JOURNAL BULLETIN</span>
         <span>TRANSMISSION 001</span>
       </div>
 
@@ -115,7 +115,7 @@ export function BroadcastIntro() {
             muted={muted}
             playsInline
             preload="auto"
-            aria-label="Wally World Service opening film"
+            aria-label="The Daily Times Journal Bulletin opening film"
             onPlay={() => setPlaying(true)}
             onPause={() => setPlaying(false)}
             onEnded={finishBroadcast}
@@ -136,7 +136,7 @@ export function BroadcastIntro() {
           <div className="arrival-static" aria-hidden="true" />
           <div className="arrival-scanlines" aria-hidden="true" />
           <div className="arrival-title-card" aria-hidden="true">
-            <span>A WALLY WORLD SERVICE BULLETIN</span>
+            <span>A DAILY TIMES JOURNAL BULLETIN</span>
             <strong>
               THE REAL WORLD
               <br />

@@ -94,14 +94,14 @@ export default function Home() {
             priority
           />
           <span>
-            WALLY NFT<small>RWA FOUNDATION CLUB</small>
+            WALLY NFT<small>DAILY EDITION</small>
           </span>
         </a>
         <nav aria-label="Main navigation">
-          <a href="#story">Story</a>
+          <a href="#story">Front Page</a>
           <a href="#herd">The 1,000</a>
-          <a href="#registry">Collection</a>
-          <a href="#activations">Activations</a>
+          <a href="#registry">Registry</a>
+          <a href="#activations">Dispatches</a>
         </nav>
         <button type="button" onClick={() => setSignalOpen(true)}>
           Coming soon
@@ -117,25 +117,28 @@ export default function Home() {
           aria-labelledby="front-page-title"
         >
           <div className="newspaper-flag">
-            <span>THE RWA FOUNDATION CLUB</span>
-            <span>GENESIS EDITION · 1,000 LEADERS</span>
+            <span>ALL THE NEWS THAT FITS THE ONCHAIN ERA</span>
+            <span>SPECIAL DIGITAL EDITION · 1,000 LEADERS</span>
           </div>
           <div className="newspaper-masthead">
-            <p>Est. for the onchain era</p>
-            <h1>Wally World Service</h1>
-            <p>Fair markets for the real world</p>
+            <p>Independent dispatches from the onchain frontier</p>
+            <h1>The Daily Times Journal Bulletin</h1>
+            <p>Fair markets for the real world · Est. 2026</p>
           </div>
           <div className="newspaper-date-line">
-            <span>MISSION EDITION</span>
-            <span>OPEN · FAIR · ONCHAIN</span>
+            <span>VOL. I · NO. 001</span>
+            <span>SUNDAY, AUGUST 30, 2026</span>
             <span>PRICE: CONVICTION</span>
           </div>
 
           <div className="front-headline">
-            <p>THE LEAD STORY</p>
-            <h2 id="front-page-title">The real world is coming onchain.</h2>
+            <p>BREAKING NEWS!</p>
+            <h2 id="front-page-title">
+              Wally rallies 1,000 leaders for a fair onchain world.
+            </h2>
             <strong>
-              Wally is gathering 1,000 leaders to help make it fair.
+              A mission-driven collection carries real-world value into a more
+              open financial era.
             </strong>
           </div>
 
@@ -155,6 +158,7 @@ export default function Home() {
             </figure>
 
             <article className="lead-copy">
+              <p className="front-byline">By The Wally Editorial Desk</p>
               <p>
                 The world holds enormous value. Access to it is still too
                 narrow. Wally exists to make the shift to real-world assets
@@ -169,7 +173,7 @@ export default function Home() {
             </article>
 
             <aside className="front-briefs" aria-label="Mission at a glance">
-              <p>AT A GLANCE</p>
+              <p>WHY IT MATTERS</p>
               <dl>
                 <div>
                   <dt>01</dt>
@@ -194,8 +198,8 @@ export default function Home() {
           aria-labelledby="herd-title"
         >
           <div className="section-rule">
-            <span>SPECIAL REPORT</span>
-            <span>THE RWA HERD</span>
+            <span>CONTINUED FROM FRONT PAGE</span>
+            <span>Special Report: The 1,000</span>
           </div>
           <div className="herd-lead">
             <div className="herd-number" aria-hidden="true">
@@ -231,13 +235,13 @@ export default function Home() {
           aria-labelledby="registry-title"
         >
           <div className="section-rule inverse">
-            <span>COLLECTION DESK</span>
-            <span>SEARCH THE HERD</span>
+            <span>THE COLLECTION INDEX</span>
+            <span>Archive &amp; Rarity</span>
           </div>
           <div className="collection-heading">
             <div>
-              <p>THE GENESIS REGISTRY</p>
-              <h2 id="registry-title">Find your Wally.</h2>
+              <p>THE GENESIS REGISTRY · RECORDS 0001–1000</p>
+              <h2 id="registry-title">The Wally Classifieds</h2>
             </div>
             <p>Search by number, color, hat, tusk, or rarity.</p>
           </div>
@@ -251,7 +255,7 @@ export default function Home() {
                   setQuery(event.target.value);
                   setVisibleCount(8);
                 }}
-                placeholder="Search # or trait"
+                placeholder="Search the archive by # or trait"
                 aria-label="Search the Wally collection"
               />
             </label>
@@ -331,12 +335,12 @@ export default function Home() {
           aria-labelledby="activation-title"
         >
           <div className="section-rule">
-            <span>FIELD NOTES</span>
-            <span>ACTIVATIONS</span>
+            <span>THE PUBLIC SQUARE</span>
+            <span>Dispatches &amp; Activations</span>
           </div>
           <div className="activation-headline">
-            <p>WHAT COMES NEXT</p>
-            <h2 id="activation-title">The herd will move in the real world.</h2>
+            <p>NEXT EDITION</p>
+            <h2 id="activation-title">The herd moves beyond the page.</h2>
           </div>
           <div className="activation-columns">
             {[
@@ -377,22 +381,22 @@ export default function Home() {
       </main>
 
       <footer className="edition-footer">
-        <strong>WALLY NFT</strong>
+        <strong>The Daily Times Journal Bulletin</strong>
         <p>Mission-driven culture for fair and open RWA markets.</p>
         <nav aria-label="Footer navigation">
-          <a href="#story">Story</a>
-          <a href="#registry">Collection</a>
-          <a href="#activations">Activations</a>
+          <a href="#story">Front Page</a>
+          <a href="#registry">Registry</a>
+          <a href="#activations">Dispatches</a>
         </nav>
       </footer>
 
       <Dialog open={signalOpen} onOpenChange={setSignalOpen}>
         <DialogContent className="edition-dialog">
-          <span>WALLY WORLD SERVICE</span>
+          <span>THE DAILY TIMES JOURNAL BULLETIN</span>
           <DialogTitle>Stand by for the next edition.</DialogTitle>
           <DialogDescription>
-            Collection launch details and the first RWA Foundation Club
-            activations will be announced here soon.
+            Collection launch details and the first public activations will be
+            announced here soon.
           </DialogDescription>
           <p>LAUNCH APPROACHING · 1,000 LEADERS</p>
           <DialogClose className="edition-dialog-close">

@@ -1765,7 +1765,7 @@ input:focus-visible {
   }
 }
 
-/* WALLY WORLD SERVICE — broadcast opening */
+/* THE DAILY TIMES JOURNAL BULLETIN — broadcast opening */
 .broadcast-hero {
   --broadcast-ink: #17150f;
   --broadcast-paper: #e9dfc7;
@@ -2533,7 +2533,7 @@ input:focus-visible {
     url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
 }
 .origin-section::before {
-  content: 'WALLY WORLD SERVICE • SPECIAL EDITION • VOL. I';
+  content: 'THE DAILY TIMES JOURNAL BULLETIN • SPECIAL EDITION • VOL. I';
   position: absolute;
   inset: 30px 0 auto;
   width: 100%;
@@ -3040,7 +3040,7 @@ input:focus-visible {
     #12130f;
 }
 .final-pledge::before {
-  content: 'WALLY WORLD SERVICE • SIGN-OFF';
+  content: 'THE DAILY TIMES JOURNAL BULLETIN • SIGN-OFF';
   position: absolute;
   inset: 40px 6vw auto;
   padding: 12px 0;
