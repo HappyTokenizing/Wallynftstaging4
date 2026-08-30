@@ -1,7 +1,13 @@
 import type { Metadata } from 'next';
+import '@fontsource/newsreader/latin-400.css';
+import '@fontsource/newsreader/latin-600.css';
+import '@fontsource/newsreader/latin-400-italic.css';
+import '@fontsource/unifrakturcook/latin-700.css';
+import '@fontsource/libre-franklin/latin-700.css';
 import './globals.css';
 import './edition.css';
 import './arrival.css';
+import './vintage.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://wallynftstaging4.vercel.app'),

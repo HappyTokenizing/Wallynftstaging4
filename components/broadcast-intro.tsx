@@ -97,7 +97,7 @@ export function BroadcastIntro() {
           alt=""
           fill
           priority
-          sizes="100vw"
+          sizes="(max-width: 700px) 1px, 85vw"
         />
         <Image
           className="tv-photo-frame tv-photo-frame-mobile"
@@ -105,7 +105,7 @@ export function BroadcastIntro() {
           alt=""
           fill
           priority
-          sizes="100vw"
+          sizes="(max-width: 700px) 88vw, 1px"
         />
 
         <div className="photo-tv-screen">
