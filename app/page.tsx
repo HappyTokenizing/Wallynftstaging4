@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 
 import { BroadcastIntro } from '@/components/broadcast-intro';
+import { NewsletterPopup } from '@/components/newsletter-popup';
+import { NewsletterSignup } from '@/components/newsletter-signup';
 import {
   Dialog,
   DialogClose,
@@ -71,15 +73,15 @@ const editionSections = [
 const worldDeskStories = [
   {
     src: '/editorial/bridge-elephant-laurel-wally.png',
-    alt: 'A real elephant with a full-color laurel-wreath Wally NFT head at a 1943 bridge construction site',
+    alt: 'A real elephant with a full color laurel wreath Wally NFT head at a 1943 bridge construction site',
     desk: 'INFRASTRUCTURE',
     title: 'The rails, bridges, and public works that hold value together.',
-    copy: 'Real-world assets begin with the systems people rely on every day. Onchain markets can widen how that value is understood and accessed.',
+    copy: 'Real world assets begin with the systems people rely on every day. Onchain markets can widen how that value is understood and accessed.',
     credit: 'Library of Congress · FSA/OWI · 1943',
   },
   {
     src: '/editorial/wall-street-elephant-top-hat-wally-v2.png',
-    alt: 'A real elephant with a full-color top-hat Wally NFT head on Wall Street in 1917',
+    alt: 'A real elephant with a full color top hat Wally NFT head on Wall Street in 1917',
     desk: 'MARKETS',
     title: 'Old markets meet open rails.',
     copy: 'Transparency should travel farther than privilege.',
@@ -87,7 +89,7 @@ const worldDeskStories = [
   },
   {
     src: '/editorial/grain-boats-elephant-wally.png',
-    alt: 'A real elephant with a full-color winter-hat Wally NFT head beside grain elevators in 1943',
+    alt: 'A real elephant with a full color winter hat Wally NFT head beside grain elevators in 1943',
     desk: 'COMMERCE',
     title: 'Goods move. Ownership can move better.',
     copy: 'Trade, inventory, and productive assets belong in a more connected system.',
@@ -95,7 +97,7 @@ const worldDeskStories = [
   },
   {
     src: '/editorial/housing-elephant-wally.png',
-    alt: 'A real elephant with a full-color crowned Wally NFT head near prefabricated housing in 1941',
+    alt: 'A real elephant with a full color crowned Wally NFT head near prefabricated housing in 1941',
     desk: 'HOUSING',
     title: 'The onchain world must still serve the real one.',
     copy: 'Technology matters when it improves access to the assets that shape daily life.',
@@ -236,7 +238,7 @@ export default function Home() {
               Wally rallies 1,000 leaders for a fair onchain world.
             </h2>
             <strong>
-              A mission-driven collection carries real-world value into a more
+              A mission driven collection carries real world value into a more
               open financial era.
             </strong>
           </div>
@@ -245,7 +247,7 @@ export default function Home() {
             <figure className="front-portrait">
               <Image
                 src="/editorial/breaking-news-wally-herd-v2.png"
-                alt="Five real black-and-white elephants with distinct full-color Wally NFT heads, led by Rainbow Wally"
+                alt="Five real black and white elephants with distinct full color Wally NFT heads, led by Rainbow Wally"
                 width={1536}
                 height={1024}
                 sizes="(max-width: 760px) 92vw, 40vw"
@@ -260,7 +262,7 @@ export default function Home() {
               <p className="front-byline">By The Wally Editorial Desk</p>
               <p className="lead-dropcap">
                 The world holds enormous value. Access to it is still too
-                narrow. Wally exists to make the shift to real-world assets
+                narrow. Wally exists to make the shift to real world assets
                 understandable, memorable, and human.
               </p>
               <p>
@@ -300,7 +302,7 @@ export default function Home() {
           aria-labelledby="world-desk-title"
         >
           <div className="section-rule">
-            <span>REAL-WORLD REPORT</span>
+            <span>REAL WORLD REPORT</span>
             <span id="world-desk-title">What Comes Onchain</span>
           </div>
           <div className="world-grid">
@@ -402,7 +404,7 @@ export default function Home() {
           </div>
           <div className="collection-heading">
             <div>
-              <p>THE GENESIS REGISTRY · RECORDS 0001–1000</p>
+              <p>THE GENESIS REGISTRY · RECORDS 0001 TO 1000</p>
               <h2 id="registry-title">The Wally Classifieds</h2>
             </div>
             <p>Search by number, color, hat, tusk, or rarity.</p>
@@ -515,6 +517,43 @@ export default function Home() {
               Show more leaders
             </button>
           )}
+          <a className="page-turn" href="#newsletter">
+            Receive the Herd Dispatch <span aria-hidden="true">→</span>
+          </a>
+        </section>
+
+        <section
+          className="newsletter-edition"
+          id="newsletter"
+          aria-labelledby="newsletter-title"
+        >
+          <div className="section-rule">
+            <span>THE HERD DISPATCH</span>
+            <span>News Delivered Direct</span>
+          </div>
+          <div className="newsletter-grid">
+            <div className="newsletter-copy">
+              <p>THE NEWSLETTER</p>
+              <h2 id="newsletter-title">Heard from the Herd.</h2>
+              <p>
+                A concise briefing on Wally, the collection, and the movement
+                bringing real world assets into fair and open markets.
+              </p>
+            </div>
+            <div className="newsletter-signup-panel">
+              <NewsletterSignup />
+              <div className="newsletter-newswire">
+                <span>FOLLOW THE NEWSWIRE</span>
+                <a
+                  href="https://x.com/WALLYCollection"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  @WALLYCollection on X / Twitter
+                </a>
+              </div>
+            </div>
+          </div>
           <a className="page-turn" href="#activations">
             Read Dispatches &amp; Activations <span aria-hidden="true">→</span>
           </a>
@@ -535,7 +574,7 @@ export default function Home() {
           </div>
           <div className="activation-columns">
             {[
-              ['Research', 'Make real-world assets easier to understand.'],
+              ['Research', 'Make real world assets easier to understand.'],
               ['Gatherings', 'Connect the people building fair markets.'],
               ['Missions', 'Turn attention into useful public action.'],
             ].map(([title, copy], index) => (
@@ -573,12 +612,20 @@ export default function Home() {
 
       <footer className="edition-footer">
         <strong>The Daily Times Journal Bulletin</strong>
-        <p>Mission-driven culture for fair and open RWA markets.</p>
+        <p>Mission driven culture for fair and open RWA markets.</p>
         <nav aria-label="Footer navigation">
           <a href="#story">Front Page</a>
           <a href="#world">World Desk</a>
           <a href="#registry">Registry</a>
+          <a href="#newsletter">Newsletter</a>
           <a href="#activations">Dispatches</a>
+          <a
+            href="https://x.com/WALLYCollection"
+            target="_blank"
+            rel="noreferrer"
+          >
+            @WALLYCollection
+          </a>
         </nav>
       </footer>
 
@@ -596,6 +643,7 @@ export default function Home() {
           </DialogClose>
         </DialogContent>
       </Dialog>
+      <NewsletterPopup />
     </div>
   );
 }
