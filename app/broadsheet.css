@@ -600,6 +600,17 @@ html {
   line-height: 0.86;
 }
 
+.sample-collection-note {
+  display: block;
+  margin-top: 9px;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: lowercase;
+}
+
 .collection-heading > p {
   font-size: 13px;
   line-height: 1.2;

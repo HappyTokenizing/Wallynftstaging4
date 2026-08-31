@@ -406,6 +406,7 @@ export default function Home() {
             <div>
               <p>THE GENESIS REGISTRY · RECORDS 0001 TO 1000</p>
               <h2 id="registry-title">The Wally Classifieds</h2>
+              <small className="sample-collection-note">sample collection</small>
             </div>
             <p>Search by number, color, hat, tusk, or rarity.</p>
           </div>
